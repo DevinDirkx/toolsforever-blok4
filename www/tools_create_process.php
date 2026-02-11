@@ -27,8 +27,15 @@ $brand = $_POST['brand'];
 $image = $_POST['image'];
 
 
-$sql = "INSERT INTO tools (tool_name, tool_category, tool_price, tool_brand, tool_image) VALUES ('$name', '$category', '$price', '$brand', '$image')";
-$result = mysqli_query($conn, $sql);
+$sql = "INSERT INTO tools (tool_name, tool_category, tool_price, tool_brand, tool_image) VALUES (:name, :category, :price, :brand, :image)";
+$stmt = $conn->prepare($sql);
+$result = $stmt->execute([
+    ':name' => $name,
+    ':category' => $category,
+    ':price' => $price,
+    ':brand' => $brand,
+    ':image' => $image
+]);
 
 if ($result) {
     header("Location: tool_index.php");
