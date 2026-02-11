@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 
-if ($_SESSION['role'] != 'administrator') {
+if ($_SESSION['role'] != 'admin') {
     echo "You are not allowed to view this page, please login as administrator";
     exit;
 }

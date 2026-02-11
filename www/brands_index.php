@@ -2,9 +2,9 @@
 session_start();
 require 'database.php';
 
-$sql = "SELECT * FROM brands";
-$result = mysqli_query($conn, $sql);
-$brands = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$stmt = $conn->prepare("SELECT * FROM brands");
+$stmt->execute();
+$brands = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 require 'header.php';

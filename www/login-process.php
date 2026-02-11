@@ -5,17 +5,20 @@ if (isset($_POST['submit'])) {
         if (!empty($_POST['email']) && !empty($_POST['password'])) {
             $emailForm = $_POST['email'];
             $passwordForm = $_POST['password'];
+            require 'database.php';
 
-            $conn = mysqli_connect('mariadb', 'root', 'password', 'tools4ever');
-
-            $sql = "SELECT * FROM users WHERE email='$emailForm'";
-            $result = mysqli_query($conn, $sql);
+            $sql = "SELECT * FROM users WHERE email = :emailForm";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([
+                "emailForm" => $emailForm
+            ]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             //als de email bestaat dan is het resultaat groter dan 0
-            if (mysqli_num_rows($result) > 0) {
+            if (count($result) > 0) {
 
                 //resultaat gevonden? Dan maken we een user-array $dbuser
-                $dbuser = mysqli_fetch_assoc($result);
+                $dbuser = $result[0];
 
                 if ($dbuser['password'] == $passwordForm) {
 
