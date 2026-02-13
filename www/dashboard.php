@@ -46,8 +46,8 @@ array_push($sql, $query);
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h2>Welkom <?php echo $_SESSION['firstname'] ?></h2>
-                <p>Je bent ingelogd als <?php echo $_SESSION['role'] ?></p>
+                <h2>Welkom <?php echo htmlspecialchars($_SESSION['firstname'], ENT_QUOTES, 'UTF-8') ?></h2>
+                <p>Je bent ingelogd als <?php echo htmlspecialchars($_SESSION['role'], ENT_QUOTES, 'UTF-8') ?></p>
             </div>
         </div>
     </div>
@@ -55,15 +55,15 @@ array_push($sql, $query);
         <div class="card">
             <div class="card-group">
                 <h2 for="">Totaal aantal gebruikers</h2>
-                <p><?php echo $users['total'] ?></p>
+                <p><?php echo htmlspecialchars($users['total'], ENT_QUOTES, 'UTF-8') ?></p>
             </div>
             <div class="card-group">
                 <h2 for="">Totaal aantal medewerkers</h2>
-                <p><?php echo $employees['total'] ?></p>
+                <p><?php echo htmlspecialchars($employees['total'], ENT_QUOTES, 'UTF-8') ?></p>
             </div>
             <div class="card-group">
                 <h2 for="">Totaal aantal soorten gereedschap</h2>
-                <p><?php echo $tools['total'] ?></p>
+                <p><?php echo htmlspecialchars($tools['total'], ENT_QUOTES, 'UTF-8') ?></p>
             </div>
         </div>
     </div>

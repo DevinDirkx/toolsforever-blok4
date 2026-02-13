@@ -22,26 +22,45 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     exit;
 }
 
-//check if all fields are filled in
-if (empty($_POST['firstname']) || empty($_POST['lastname']) || empty($_POST['email']) || empty($_POST['role']) || empty($_POST['address']) || empty($_POST['city']) || empty($_POST['backgroundColor']) || empty($_POST['font'])) {
-    echo "Please fill in all fields";
+// basic server-side validation & sanitization
+$required = ['firstname','lastname','email','password','role','address','city','backgroundColor','font'];
+foreach ($required as $field) {
+    if (empty($_POST[$field])) {
+        $_SESSION['error'] = 'Please fill in all fields';
+        header('Location: users_create.php');
+        exit;
+    }
+}
+
+$email = filter_var(trim($_POST['email']), FILTER_VALIDATE_EMAIL);
+if (!$email) {
+    $_SESSION['error'] = 'Invalid email address';
+    header('Location: users_create.php');
     exit;
 }
 
-$email = $_POST['email'];
-$password = $_POST['password'];
-$firstname = $_POST['firstname'];
-$lastname = $_POST['lastname'];
-$role = $_POST['role'];
-$address = $_POST['address'];
-$city = $_POST['city'];
+$password_raw = $_POST['password'];
+if (strlen($password_raw) < 6) {
+    $_SESSION['error'] = 'Password must be at least 6 characters';
+    header('Location: users_create.php');
+    exit;
+}
+
+
+$firstname = htmlspecialchars(trim($_POST['firstname']), ENT_QUOTES);
+$lastname = htmlspecialchars(trim($_POST['lastname']), ENT_QUOTES);
+$role = in_array($_POST['role'], ['admin','user']) ? $_POST['role'] : 'user';
+$address = htmlspecialchars(trim($_POST['address']), ENT_QUOTES);
+$city = htmlspecialchars(trim($_POST['city']), ENT_QUOTES);
+$backgroundColor = htmlspecialchars(trim($_POST['backgroundColor']), ENT_QUOTES);
+$font = htmlspecialchars(trim($_POST['font']), ENT_QUOTES);
 $is_active = 1;
 
 $sql = "INSERT INTO users (email, password, firstname, lastname, role, address, city, is_active) VALUES (:email, :password, :firstname, :lastname, :role, :address, :city, :is_active)";
 $stmt = $conn->prepare($sql);
 $result = $stmt->execute([
     ':email' => $email,
-    ':password' => $password,
+    ':password' => $password_hash($password, PASSWORD_DEFAULT),
     ':firstname' => $firstname,
     ':lastname' => $lastname,
     ':role' => $role,
@@ -52,8 +71,6 @@ $result = $stmt->execute([
 
 if ($result) {
     $user_id = $conn->lastInsertId();
-    $backgroundColor = $_POST['backgroundColor'];
-    $font = $_POST['font'];
     $sql = "INSERT INTO user_settings (user_id, backgroundColor, font) VALUES (:user_id, :backgroundColor, :font)";
     $stmt = $conn->prepare($sql);
     $result = $stmt->execute([
@@ -65,8 +82,12 @@ if ($result) {
         header("Location: users_index.php");
         exit;
     } else {
-        echo "Something went wrong";
+        $_SESSION['error'] = 'Could not save user settings';
+        header('Location: users_create.php');
+        exit;
     }
 }
 
-echo "Something went wrong";
+$_SESSION['error'] = 'Could not create user';
+header('Location: users_create.php');
+exit;

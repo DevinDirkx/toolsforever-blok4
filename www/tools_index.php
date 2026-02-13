@@ -35,17 +35,17 @@ require 'header.php';
         <tbody>
             <?php foreach ($tools as $tool) : ?>
                 <tr>
-                    <td><?php echo $tool['tool_name'] ?></td>
-                    <td><?php echo $tool['tool_category'] ?></td>
-                    <td><?php echo $tool['tool_price'] ?></td>
-                    <td><?php echo $tool['tool_brand'] ?></td>
+                    <td><?php echo htmlspecialchars($tool['tool_name'], ENT_QUOTES, 'UTF-8') ?></td>
+                    <td><?php echo htmlspecialchars($tool['tool_category'], ENT_QUOTES, 'UTF-8') ?></td>
+                    <td><?php echo htmlspecialchars($tool['tool_price'], ENT_QUOTES, 'UTF-8') ?></td>
+                    <td><?php echo htmlspecialchars($tool['tool_brand'], ENT_QUOTES, 'UTF-8') ?></td>
                     <td>
 
-                        <a href="tools_detail.php?id=<?php echo $tool['tool_id'] ?>">Bekijk</a>
+                        <a href="tools_detail.php?id=<?php echo htmlspecialchars($tool['tool_id'], ENT_QUOTES, 'UTF-8') ?>">Bekijk</a>
                         Wijzig
                         Verwijder
-                        <!-- <a href="tools_edit.php?id=<?php echo $tool['tool_id'] ?>">Wijzig</a> -->
-                        <a href="tools_delete.php?id=<?php echo $tool['tool_id'] ?>"
+                        <!-- <a href="tools_edit.php?id=<?php echo htmlspecialchars($tool['tool_id'], ENT_QUOTES, 'UTF-8') ?>">Wijzig</a> -->
+                        <a href="tools_delete.php?id=<?php echo htmlspecialchars($tool['tool_id'], ENT_QUOTES, 'UTF-8') ?>"
                         onclick="return confirm('weet je het zeker dat je deze tool wilt verwijderen?')"
                         >
                         Verwijder

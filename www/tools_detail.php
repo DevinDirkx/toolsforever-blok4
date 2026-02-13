@@ -22,15 +22,15 @@ require 'header.php';
             <div class="product-detail">
                 <div class="row">
                     <div class="col">
-                        <img src="<?php echo isset($tool['tool_image']) ? 'images/' . $tool['tool_image'] : 'https://placehold.co/200' ?>" alt="<?php echo $tool['tool_name'] ?>">
+                        <img src="<?php echo isset($tool['tool_image']) ? 'images/' . htmlspecialchars($tool['tool_image'], ENT_QUOTES, 'UTF-8') : 'https://placehold.co/200' ?>" alt="<?php echo htmlspecialchars($tool['tool_name'], ENT_QUOTES, 'UTF-8') ?>">
                     </div>
                     <div class="col">
-                        <h3><?php echo $tool['tool_name'] ?></h3>
-                        <p><?php echo $tool['tool_brand'] ?></p>
-                        <p><?php echo $tool['tool_category'] ?></p>
+                        <h3><?php echo htmlspecialchars($tool['tool_name'], ENT_QUOTES, 'UTF-8') ?></h3>
+                        <p><?php echo htmlspecialchars($tool['tool_brand'], ENT_QUOTES, 'UTF-8') ?></p>
+                        <p><?php echo htmlspecialchars($tool['tool_category'], ENT_QUOTES, 'UTF-8') ?></p>
                         <p>€ <?php echo number_format($tool['tool_price'] / 100, 2, ',', '') ?></p>
                         <p>
-                            <a href="add_to_cart.php?id=<?php echo $tool['tool_id']; ?>" class="btn">Bestel</a>
+                            <a href="add_to_cart.php?id=<?php echo htmlspecialchars($tool['tool_id'], ENT_QUOTES, 'UTF-8'); ?>" class="btn">Bestel</a>
                         </p>
                     </div>
                 </div>

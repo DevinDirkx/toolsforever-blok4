@@ -20,11 +20,27 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 }
 require 'database.php';
 
-$name = $_POST['name'];
-$category = $_POST['category'];
-$price = $_POST['price'];
-$brand = $_POST['brand'];
-$image = $_POST['image'];
+// basic server-side validation & sanitization
+$required = ['name','category','price','brand'];
+foreach ($required as $field) {
+    if (empty($_POST[$field])) {
+        $_SESSION['error'] = 'Please fill in all fields';
+        header('Location: tools_create.php');
+        exit;
+    }
+}
+
+$name = htmlspecialchars(trim($_POST['name']), ENT_QUOTES);
+$category = htmlspecialchars(trim($_POST['category']), ENT_QUOTES);
+$price_raw = trim($_POST['price']);
+if (!is_numeric($price_raw) || $price_raw < 0) {
+    $_SESSION['error'] = 'Price must be a positive number';
+    header('Location: tools_create.php');
+    exit;
+}
+$price = floatval($price_raw);
+$brand = htmlspecialchars(trim($_POST['brand']), ENT_QUOTES);
+$image = isset($_POST['image']) ? htmlspecialchars(trim($_POST['image']), ENT_QUOTES) : null;
 
 
 $sql = "INSERT INTO tools (tool_name, tool_category, tool_price, tool_brand, tool_image) VALUES (:name, :category, :price, :brand, :image)";

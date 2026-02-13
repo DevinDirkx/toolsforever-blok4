@@ -36,16 +36,16 @@ require 'header.php';
             <tbody>
                 <?php foreach ($users as $user) : ?>
                     <tr>
-                        <td><?php echo $user['firstname'] ?></td>
-                        <td><?php echo $user['lastname'] ?></td>
-                        <td><?php echo $user['email'] ?></td>
-                        <td><?php echo $user['role'] ?></td>
+                        <td><?php echo htmlspecialchars($user['firstname'], ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?php echo htmlspecialchars($user['lastname'], ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?php echo htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?php echo htmlspecialchars($user['role'], ENT_QUOTES, 'UTF-8') ?></td>
                         <td>
-                            <a href="users_detail.php?id=<?php echo $user['id'] ?>">Bekijk</a>
+                            <a href="users_detail.php?id=<?php echo htmlspecialchars($user['id'], ENT_QUOTES, 'UTF-8') ?>">Bekijk</a>
                             Wijzig
                       
-                            <!-- <a href="users_edit.php?id=<?php echo $user['id'] ?>">Wijzig</a>  -->
-                            <a href="users_delete.php?id=<?php echo $user['id'] ?>">Verwijder</a>
+                            <!-- <a href="users_edit.php?id=<?php echo htmlspecialchars($user['id'], ENT_QUOTES, 'UTF-8') ?>">Wijzig</a>  -->
+                            <a href="users_delete.php?id=<?php echo htmlspecialchars($user['id'], ENT_QUOTES, 'UTF-8') ?>">Verwijder</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
